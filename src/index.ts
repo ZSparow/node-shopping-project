@@ -1,16 +1,17 @@
-import "reflect-metadata";
 import * as express from "express";
-import v1 from "../route/app/v1"
+import { createConnection } from "typeorm";
 const app = express();
-app.use(express.json())
-const port =3000;
-
-
-app.use("/v1", v1)
+const port = 3000;
+import v1 from "../route/app/v1";
 
 
 
-
-
-
-app.listen(port, ()=>{console.log(`listening on port ${port}`)})
+createConnection().then(async (connection) => {
+    app.use(express.json());
+  
+    app.use("/v1", v1);
+  
+    app.listen(port, () => {
+      console.log(`Running on port ${port}`);
+    });
+  });
