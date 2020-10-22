@@ -1,10 +1,10 @@
 import { type } from "os";
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity} from "typeorm";
 import { Invoice } from './Invoice';
 import { Product } from "./Product";
 
 @Entity("InvoiceItems")
-export class InvoiceItem {
+export class InvoiceItem extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;

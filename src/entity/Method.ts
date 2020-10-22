@@ -1,7 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm";
 
 @Entity("Methods")
-export class Method {
+export class Method extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;

@@ -1,11 +1,11 @@
 import { type } from "os";
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BaseEntity} from "typeorm";
 import { Category } from "./Category";
 import { InvoiceItem } from './InvoiceItem';
 
 
 @Entity("products")
-export class Product {
+export class Product extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;

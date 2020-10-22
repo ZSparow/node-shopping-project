@@ -1,8 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity} from "typeorm";
 import { User } from './User';
 
 @Entity("notifications")
-export class Notification {
+export class Notification extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;
