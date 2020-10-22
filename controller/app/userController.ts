@@ -95,7 +95,7 @@ export default class UserController {
         //TODO: get the user from DB
 
         let user = await User.findOne(payload.id)
-        if(user)
+        if(!user) return errRes(res,'you are not registered')
 
         //TODO: check if the user is complete
         if(user.complete) return errRes(res,"the user is already complete")
@@ -123,7 +123,11 @@ export default class UserController {
     }
 
 
-
+/**
+ * 
+ * @param req 
+ * @param res 
+ */
     static async login(req: Request, res: Response){
     
       //TODO: validate the req.body
@@ -131,7 +135,6 @@ export default class UserController {
       let notValid = validate(req.body, validator.login())
       if(notValid) return errRes(res,"invalid data")
 
-      return okRes(res, "everything is good")
 
       //TODO: phone format
 
@@ -159,6 +162,12 @@ export default class UserController {
       return okRes(res, {data: {token}})
 
 }
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ */
 
   static async makeInvoce (req: Request, res: Response){
     //TODO: validate
@@ -242,6 +251,64 @@ export default class UserController {
     }
 
     return okRes(res, { data: { invoice } });
+
+}
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ */
+static async changePassword(req: Request, res: Response){
+    
+  //TODO: validate the req.body
+
+  let notValid = validate(req.body, validator.changePassword())
+  if(notValid) return errRes(res,"invalid data")
+
+
+  //TODO: phone format
+
+  let phoneObj = PhoneFormat.getAllFormats(req.body.phone)
+  if(!phoneObj.isNumber) return errRes(res,"your phone is invailed")
+
+  const phone = phoneObj.globalP;
+
+  //TODO: find the user from the database
+  let user: any;
+   user = User.findOne({where: {phone}})
+
+  if(!user) return errRes(res,`Your phone number ${phone} are not registered`)
+
+
+        //TODO: generate and check otp
+        user.otp = otpGenerator();
+        await user.save();
+
+
+        if (user.otp != req.body.otp){
+          user.otp = null;
+          await user.save()
+          return errRes(res,`The otp ${req.body.otp} is not correct`)
+        }
+
+
+        await user.save()
+        user.password = null;
+
+        return okRes(res,{data: {user}})
+
+        //TODO: set a new password 
+        const password = await hashMyPassword(req.body.password);
+
+        user.password = password;
+        await user.save()
+
+
+  //TODO: create token
+
+  let token = jwt.sign({id: (await user).id}, config.jstSecret)
+  return okRes(res, {data: {token}})
 
 }
 }

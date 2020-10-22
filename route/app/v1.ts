@@ -13,6 +13,7 @@ router.post('/register', UserController.register);
 router.post('/otp', UserController.OTPCheck);
 router.post('/login', UserController.login);
 router.post('/invoice', UserController.makeInvoce);
+router.post('/changePsw', UserController.changePassword);
 
 //-------------------- Home Router ------------------
 

@@ -94,4 +94,12 @@ export default class Validator{
       type: "number"
     }
   })
+
+  static changePassword = (must = true) => ({
+    phone: {
+      presence: must,
+      type: "string",
+      length: { maximum: 15, minimum: 10 },
+    }
+  })
 }
