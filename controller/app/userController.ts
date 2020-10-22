@@ -296,7 +296,6 @@ static async changePassword(req: Request, res: Response){
         await user.save()
         user.password = null;
 
-        return okRes(res,{data: {user}})
 
         //TODO: set a new password 
         const password = await hashMyPassword(req.body.password);
